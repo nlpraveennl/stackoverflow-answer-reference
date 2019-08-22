@@ -4,8 +4,7 @@ Refer project <b>springsecurity-auth-success-handler-javaconfig</b> for java bas
 
 Refer project <b>springsecurity-auth-success-handler-xmlconfig</b> for xml based configuration
 
-This blog main intention is 
-Different ways to configure session timeout time(maxInactiveInterval) in spring security
+This blog main intention is to explain Different ways to configure session timeout time(maxInactiveInterval) in spring security
 
 ### 1. By addinng session config in web.xml
 ```
