@@ -51,8 +51,8 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 ### 3. By adding your custom AuthenticationSuccessHandler
 This implementation has adavantages
-1. You can set different value of maxInactiveInterval for different roles/users
-2. On logout success you can set user object in session, hence user object can be accessed in any controller from session
+1. On login success, You can set different value of maxInactiveInterval for different roles/users
+2. On login success, you can set user object in session, hence user object can be accessed in any controller from session
 Create AuthenticationSuccessHandler Handler
 ```
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler
