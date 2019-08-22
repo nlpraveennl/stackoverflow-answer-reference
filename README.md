@@ -45,11 +45,15 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 // in xml config way - add below configuration in web.xml
 <listener>
-		<listener-class>com.pvn.mvctiles.configuration.SessionListener</listener-class>
+	<listener-class>com.pvn.mvctiles.configuration.SessionListener</listener-class>
 </listener>
 ```
 
 ### 3. By adding your custom AuthenticationSuccessHandler
+This implementation has adavantages
+1. You can set different value of maxInactiveInterval for different roles/users
+2. On logout success you can set user object in session, hence user object can be accessed in any controller from session
+Create AuthenticationSuccessHandler Handler
 ```
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler
 {
@@ -71,3 +75,60 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     }
 }
 ```
+Register success handler
+
+In Java Config way
+```
+@Override
+protected void configure(final HttpSecurity http) throws Exception
+{
+	http
+		.authorizeRequests()
+			.antMatchers("/resources/**", "/login"").permitAll()
+			.antMatchers("/app/admin/*").hasRole("ADMIN")
+			.antMatchers("/app/user/*", "/").hasAnyRole("ADMIN", "USER")
+		.and().exceptionHandling().accessDeniedPage("/403")
+		.and().formLogin()
+			.loginPage("/login").usernameParameter("userName")
+			.passwordParameter("password")
+			.successHandler(new MyAuthenticationSuccessHandler())
+			.failureUrl("/login?error=true")
+		.and().logout()
+			.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+			.invalidateHttpSession(true)
+		.and().csrf().disable();
+
+	http.sessionManagement().maximumSessions(1).expiredUrl("/login?expired=true");
+}
+```
+In xml config way
+```
+<http auto-config="true" use-expressions="true" create-session="ifRequired">
+	<csrf disabled="true"/>
+
+	<intercept-url pattern="/resources/**" access="permitAll" />
+	<intercept-url pattern="/login" access="permitAll" />
+
+	<intercept-url pattern="/app/admin/*" access="hasRole('ROLE_ADMIN')" />
+	<intercept-url pattern="/" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+	<intercept-url pattern="/app/user/*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+
+	<access-denied-handler error-page="/403" />
+
+	<form-login 
+	    login-page="/login"
+	    authentication-success-handler-ref="authenticationSuccessHandler"
+	    authentication-failure-url="/login?error=true" 
+	    username-parameter="userName"
+	    password-parameter="password" />
+
+	<logout invalidate-session="false" success-handler-ref="customLogoutSuccessHandler"/>
+
+	<session-management invalid-session-url="/login?expired=true">
+		<concurrency-control max-sessions="1" />
+	</session-management>
+ </http>
+ 
+ <beans:bean id="authenticationSuccessHandler" class="com.pvn.mvctiles.configuration.MyAuthenticationSuccessHandler" />
+ 
+ ```
