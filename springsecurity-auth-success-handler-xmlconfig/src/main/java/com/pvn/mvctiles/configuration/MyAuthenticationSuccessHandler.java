@@ -33,10 +33,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails user = new UserDetails();
 		user.setUserName(((User)principal).getUsername());
-		user.setPassword(((User)principal).getPassword());
 		
 		request.getSession(false).setAttribute("loggedInUser", user);
 		
-		response.sendRedirect(request.getContextPath());
+		response.sendRedirect(request.getContextPath()+"/app/user/dashboard");
     }
 }

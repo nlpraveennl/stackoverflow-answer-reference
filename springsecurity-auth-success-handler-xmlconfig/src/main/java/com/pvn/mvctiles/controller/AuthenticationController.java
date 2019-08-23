@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +26,8 @@ public class AuthenticationController
 	@Autowired
 	MessageSource	messageSource;
 
-	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView login(ModelAndView model, @ModelAttribute("login") UserDetails userDetails, BindingResult result,
+	@RequestMapping(value = { "/login", "/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView login(ModelAndView model, @ModelAttribute("login") UserDetails userDetails,
 			@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
 			@RequestParam(value = "expired", required = false) String expired,HttpServletRequest request)
 	{
@@ -51,7 +50,7 @@ public class AuthenticationController
 		return model;
 	}
 
-	@RequestMapping("/")
+	@RequestMapping("/app/user/dashboard")
 	public String showDashboard(Model model, HttpServletRequest request)
 	{
 		return "dashboard";
@@ -63,7 +62,7 @@ public class AuthenticationController
 		return "403";
 	}
 	
-	@RequestMapping("app/admin/app-config")
+	@RequestMapping("/app/admin/app-config")
 	public String appConfig(Model model, HttpServletRequest request)
 	{
 		return "admin/app-config";

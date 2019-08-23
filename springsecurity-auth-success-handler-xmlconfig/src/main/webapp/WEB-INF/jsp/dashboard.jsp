@@ -52,7 +52,7 @@
 					</a>
 				</div>
 				<div class="menu-item">
-					<a href="${pageContext.request.contextPath}/" style="color:white">
+					<a href="${pageContext.request.contextPath}/app/user/dashboard" style="color:white">
 						<spring:message code="app.dashboard.label"/>
 					</a>
 				</div>

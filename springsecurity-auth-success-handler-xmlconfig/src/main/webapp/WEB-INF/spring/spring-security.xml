@@ -13,9 +13,9 @@
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/api/**" access="permitAll" />
+		<intercept-url pattern="/" access="permitAll" />
 		
 		<intercept-url pattern="/app/admin/*" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
 		<intercept-url pattern="/app/user/*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
 		
 		<access-denied-handler error-page="/403" />
@@ -27,8 +27,6 @@
 			username-parameter="userName"
 			password-parameter="password" />
 		
-   <!-- Modified/Added CustomLogoutSuccessHandler to display session expired message -->
-   <!-- <logout logout-success-url="/login?logout=true"  invalidate-session="false" delete-cookies="JSESSIONID"/> -->
 		<logout invalidate-session="false" success-handler-ref="customLogoutSuccessHandler"/>
 			
 		<session-management invalid-session-url="/login?expired=true">
