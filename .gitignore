@@ -1,7 +1,6 @@
 */.metadata/
 *.class
 *target*
-*.jar
 *.war
 *.ear
 *.class

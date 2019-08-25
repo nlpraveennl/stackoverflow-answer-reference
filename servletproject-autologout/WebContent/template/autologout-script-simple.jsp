@@ -1,11 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script>
-
 $(document).ready(function()
 {
 	var timeOutTimeInSeconds = ${ timeOutTimeInSeconds }; //should be same as maxInactiveInterval in server
-	var showTimerTimeInSeconds= ${ showTimerTimeInSeconds };
 	
 	var sessionCheckIntervalId = setInterval(redirectToLoginPage, timeOutTimeInSeconds * 1000);
 	window.localStorage.setItem("AjaxRequestFired", new Date());
@@ -34,16 +32,4 @@ $(document).ready(function()
 	    sessionCheckIntervalId = setInterval(redirectToLoginPage, timeOutTimeInSeconds * 1000);
 	}
 });
-
-function doAjaxCall()
-{
-	  $.ajax({
-	   type: "GET",
-	   url: 'resfreshSession',
-	   success: function(data, textStatus, xhr)
-	   {
-		   alert(data);
-	   }
-	 });
-}
 </script>
